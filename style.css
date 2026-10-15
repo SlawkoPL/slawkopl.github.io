@@ -27,14 +27,8 @@ button {
     transition: all ease 0.3s;
 }
 
-a{
-    background-color: rgba(255, 255, 255, 0);
-    text-decoration: none;
-}
-
 a:hover{
-    color:blue;
-    font-size: 20px;
+    text-decoration-color: azure;
 }
 
 .social {
