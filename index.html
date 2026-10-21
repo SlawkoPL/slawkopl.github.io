@@ -1,37 +1,337 @@
-<!DOCTYPE html>
-<html lang="pl">
+<!doctype html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <title>Slawek WWW</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="description" content="A little corner of the internet for a developer who loves Python, thoughtful design and making the web a little better.">
+  <title>Sławomir Worek - student and programmer</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --surface: #101317;
+      --surface-raised: #14181d;
+      --line: #22272d;
+      --text: #eeefe9;
+      --muted: #92989b;
+      --green: #c3f36b;
+      --green-soft: #ddf7b4;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --max-width: 1080px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
+    .shell { width: min(var(--max-width), calc(100% - 64px)); margin-inline: auto; }
+    .mono { font-family: var(--mono); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: 72px;
+      border-bottom: 1px solid rgb(255 255 255 / 5%);
+      background: rgb(11 13 16 / 85%);
+      backdrop-filter: blur(18px);
+    }
+    .nav { display: flex; height: 100%; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 14px; font-weight: 650; letter-spacing: -.035em; }
+    .brand-mark { display: grid; width: 31px; height: 31px; place-items: center; border: 1px solid #343d32; border-radius: 9px; background: #151a13; color: var(--green); font: 600 12px var(--mono); }
+    .nav-links { display: flex; align-items: center; gap: 33px; color: #a3a8a8; font-size: 12px; }
+    .nav-links a { transition: color .2s ease; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-links .contact-link { padding: 8px 13px; border: 1px solid #30362c; border-radius: 7px; color: var(--green-soft); }
+    .nav-links .contact-link:hover { border-color: var(--green); color: var(--green); }
+
+    .hero { position: relative; overflow: hidden; padding: 91px 0 78px; }
+    .hero::before {
+      position: absolute;
+      top: -200px;
+      right: calc((100% - min(var(--max-width), calc(100% - 64px))) / 2 - 100px);
+      width: 590px;
+      height: 590px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgb(153 204 82 / 8%) 0, rgb(126 170 77 / 3%) 39%, transparent 70%);
+      content: "";
+      pointer-events: none;
+    }
+    .hero-grid { position: relative; display: grid; grid-template-columns: 1fr .86fr; align-items: center; gap: 74px; }
+    .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--green); font: 11px var(--mono); letter-spacing: .025em; }
+    .status-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgb(195 243 107 / 65%); }
+    h1 { margin: 19px 0 18px; font-size: clamp(43px, 5.4vw, 64px); font-weight: 610; letter-spacing: -.075em; line-height: 1.08; }
+    h1 .soft { color: #aaaead; }
+    .hero-copy { max-width: 470px; margin: 0; color: #a5aaa9; font-size: 15px; line-height: 1.9; }
+    .hero-copy strong { color: #e2e5dd; font-weight: 550; }
+    .hero-actions { display: flex; align-items: center; gap: 23px; margin-top: 29px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 0 15px; border: 1px solid var(--green); border-radius: 7px; background: var(--green); color: #14170d; font-size: 12px; font-weight: 650; transition: transform .2s, background .2s; }
+    .button:hover { transform: translateY(-2px); background: #d4fa8f; }
+    .text-link { color: #c1c5be; font-size: 12px; transition: color .2s; }
+    .text-link:hover { color: var(--green); }
+    .arrow { font-size: 16px; line-height: 1; }
+
+    .code-window { overflow: hidden; border: 1px solid #292f32; border-radius: 11px; background: #101316; box-shadow: 0 25px 80px rgb(0 0 0 / 27%), 0 1px 0 rgb(255 255 255 / 3%) inset; transform: rotate(.7deg); }
+    .window-bar { display: flex; height: 39px; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid #24292d; color: #777f80; font: 10px var(--mono); }
+    .window-dots { display: flex; gap: 5px; }
+    .window-dots span { width: 7px; height: 7px; border-radius: 50%; background: #4b514e; }
+    .window-dots span:first-child { background: #8a675b; }
+    .window-dots span:nth-child(2) { background: #9a8a59; }
+    .window-dots span:nth-child(3) { background: #758f63; }
+    .window-title { padding-right: 25px; }
+    .code-content { padding: 24px 21px 22px; font: 11.5px/2.05 var(--mono); white-space: nowrap; }
+    .code-line { display: flex; min-height: 23px; }
+    .line-no { width: 29px; padding-right: 15px; color: #50585a; text-align: right; user-select: none; }
+    .code { color: #d6d9d2; }
+    .indent { padding-left: 17px; }
+    .c-purple { color: #c6a7ec; }
+    .c-green { color: #b8dc83; }
+    .c-yellow { color: #e4cb83; }
+    .c-blue { color: #91c5d0; }
+    .c-muted { color: #737e7d; }
+    .cursor { display: inline-block; width: 6px; height: 12px; margin-left: 3px; background: var(--green); vertical-align: -2px; animation: blink 1.1s steps(2, start) infinite; }
+    @keyframes blink { to { visibility: hidden; } }
+
+    .section { padding: 69px 0 76px; border-top: 1px solid #1b1f23; }
+    .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 29px; }
+    .section-label { margin: 0 0 7px; color: var(--green); font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    h2 { margin: 0; font-size: 24px; font-weight: 560; letter-spacing: -.045em; line-height: 1.3; }
+    .heading-note { color: #72797a; font: 10px var(--mono); }
+    .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 72px; }
+    .about-copy p { margin: 0 0 15px; color: #a3a9a7; font-size: 13px; line-height: 1.9; }
+    .about-copy p:last-child { margin-bottom: 0; }
+    .about-copy strong { color: #e0e4dd; font-weight: 550; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; align-content: start; border-top: 1px solid var(--line); }
+    .fact { padding: 14px 10px 13px 0; border-bottom: 1px solid var(--line); }
+    .fact-name { display: block; margin-bottom: 4px; color: #707879; font: 9px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+    .fact-value { color: #d4d8d2; font-size: 12px; }
+    .fact-value.available { display: inline-flex; align-items: center; gap: 7px; color: #d1e4b6; }
+    .fact-value .status-dot { width: 6px; height: 6px; }
+
+    .skills-section { padding-top: 0; border-top: 0; }
+    .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .skill-card { min-height: 139px; padding: 17px 17px 14px; border: 1px solid #252a2e; border-radius: 8px; background: linear-gradient(145deg, #121619, #101316); transition: border-color .2s, transform .2s; }
+    .skill-card:hover { transform: translateY(-3px); border-color: #49553b; }
+    .skill-icon { display: grid; width: 31px; height: 31px; margin-bottom: 14px; place-items: center; border: 1px solid #30382d; border-radius: 8px; background: #1a2017; color: var(--green); font: 12px var(--mono); }
+    .skill-card h3 { margin: 0 0 5px; font-size: 12px; font-weight: 550; }
+    .skill-card p { margin: 0; color: #858c8c; font-size: 10px; line-height: 1.65; }
+
+    .projects-section { padding-top: 66px; }
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .project-card { position: relative; min-height: 215px; padding: 19px 20px 16px; overflow: hidden; border: 1px solid #252a2e; border-radius: 8px; background: #111417; transition: border-color .2s, transform .2s; }
+    .project-card:hover { transform: translateY(-3px); border-color: #46513a; }
+    .project-card::after { position: absolute; top: -48px; right: -42px; width: 150px; height: 150px; border: 1px solid rgb(195 243 107 / 6%); border-radius: 35%; transform: rotate(28deg); content: ""; }
+    .project-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .project-symbol { display: grid; width: 35px; height: 35px; place-items: center; border: 1px solid #30382d; border-radius: 8px; background: #171d15; color: var(--green); font: 14px var(--mono); }
+    .project-type { color: #727a79; font: 9px var(--mono); }
+    .project-card h3 { margin: 0 0 7px; font-size: 14px; font-weight: 560; letter-spacing: -.02em; }
+    .project-card > p { max-width: 410px; margin: 0; color: #929999; font-size: 11px; line-height: 1.8; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+    .tag { padding: 3px 7px; border: 1px solid #292e31; border-radius: 4px; color: #929a98; font: 9px var(--mono); }
+
+    .contact { padding: 2px 0 78px; }
+    .contact-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 27px 29px; border: 1px solid #333b2b; border-radius: 9px; background: radial-gradient(ellipse at 85% 15%, rgb(157 198 88 / 9%), transparent 36%), #111511; }
+    .contact-card .section-label { margin-bottom: 8px; }
+    .contact-card h2 { font-size: 22px; }
+    .contact-card p { margin: 7px 0 0; color: #a1a7a1; font-size: 11px; }
+    .contact-email { flex: 0 0 auto; }
+
+    footer { padding: 18px 0 21px; border-top: 1px solid #1b1f23; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #72797a; font: 9px var(--mono); }
+    .footer-inner span:last-child { color: #899085; }
+    .footer-inner .heart { color: #cf8c79; }
+
+    @media (min-width: 1200px) { .hero { padding-top: 101px; padding-bottom: 88px; } }
+    @media (max-width: 800px) {
+      .shell { width: min(var(--max-width), calc(100% - 42px)); }
+      .hero { padding: 72px 0 60px; }
+      .hero-grid { grid-template-columns: 1fr .92fr; gap: 30px; }
+      h1 { font-size: clamp(41px, 7vw, 56px); }
+      .code-content { padding-inline: 12px; font-size: 10px; }
+      .line-no { width: 25px; padding-right: 12px; }
+      .about-grid { gap: 38px; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 580px) {
+      .shell { width: calc(100% - 36px); }
+      .topbar { height: 62px; }
+      .nav-links { gap: 15px; font-size: 10px; }
+      .nav-links .optional { display: none; }
+      .nav-links .contact-link { padding: 6px 9px; }
+      .hero { padding: 59px 0 48px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 35px; }
+      .hero-copy { max-width: 420px; font-size: 14px; }
+      .hero-actions { margin-top: 23px; }
+      .code-window { max-width: 420px; transform: none; }
+      .code-content { padding: 16px 16px 17px; font-size: 10.5px; }
+      .section { padding: 51px 0 55px; }
+      .section-heading { align-items: flex-start; margin-bottom: 22px; }
+      h2 { font-size: 22px; }
+      .heading-note { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 22px; }
+      .about-copy p { font-size: 12px; }
+      .skills-section { padding-top: 0; padding-bottom: 45px; }
+      .skills-grid { gap: 9px; }
+      .skill-card { min-height: 132px; padding: 14px 12px; }
+      .skill-icon { margin-bottom: 11px; }
+      .projects-section { padding-top: 46px; }
+      .projects-grid { grid-template-columns: 1fr; gap: 10px; }
+      .project-card { min-height: auto; padding: 17px; }
+      .contact { padding: 0 0 52px; }
+      .contact-card { align-items: flex-start; flex-direction: column; padding: 21px; }
+      .footer-inner { font-size: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-    <div class="up">
-        Sławomir Worek
-        <br>
-        <a href="info.html"><button>Informacje</button></a>
-        <a href="projekty.html"><button>Projekty</button></a>
-        <a href="kontakt.html"><button>Kontakt</button></a>
-        
+  <header class="topbar">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Alex Morgan, home">
+        <span class="brand-mark">-></span>
+        <span>slawek<span style="color:var(--green)">.</span>dev</span>
+      </a>
+      <div class="nav-links mono">
+        <a href="#about">o mnie</a>
+        <a class="optional" href="#skills">czego używam</a>
+        <a class="optional" href="#projects">projekty</a>
+        <a class="contact-link" href="#contact">kontakt <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </header>
 
-    </div>
-    <br>
-    <div class="kod">
-        <span class="py-builtin">print</span><span class="py-string">("Witaj na mojej stronie!")</span>
-    </div>
-    <br>
-    <br>
-    <h3>Witaj na oficjalnej stronie Sławomira W.</h3>
-    <br>
-    <h4 style="font-weight: lighter;">Miłego zwiedzania :D
-    </h4>
-    <br>
-    <img src="ikona.webp" alt="logo python">
-    <br>
-    <footer style="text-align: center;font-weight: lighter;">&copy; 2026 Sławomir Worek. Wszelkie prawa zastrzeżone.</footer>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-grid shell">
+        <div class="hero-text">
+          <div class="eyebrow"><span class="status-dot"></span> GOTOWY NA NOWY PROJEKT</div>
+          <h1>Cześć, jestem Sławek.<br><span class="soft">Programuję, studiuję</span><br>i buduję projekty<span style="color:var(--green)">.</span></h1>
+          <p class="hero-copy">Programista student, który szuka uniwersalnych rozwiązań informatycznych <strong>i tworzy coś co może przydać się innym</strong> - Programista to maszyna zamieniająca kawę w kod. (That's exactly what I am 😁)</p>
+          <div class="hero-actions">
+            <a class="button" href="#projects">Zobacz moje projekty <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#about">Trochę więcej o mnie <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+
+        <div class="code-window" aria-label="A sample Python code editor window">
+          <div class="window-bar">
+            <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="window-title">a_little_about_me.py</span>
+            <span>●&nbsp; python</span>
+          </div>
+          <div class="code-content" aria-hidden="true">
+            <div class="code-line"><span class="line-no">1</span><span class="code"><span class="c-purple">class</span> <span class="c-yellow">Developer</span>:</span></div>
+            <div class="code-line"><span class="line-no">2</span><span class="code indent"><span class="c-purple">def</span> <span class="c-blue">__init__</span>(<span class="c-green">self</span>):</span></div>
+            <div class="code-line"><span class="line-no">3</span><span class="code indent" style="padding-left:34px"><span class="c-green">self</span>.name = <span class="c-yellow">"Alex Morgan"</span></span></div>
+            <div class="code-line"><span class="line-no">4</span><span class="code indent" style="padding-left:34px"><span class="c-green">self</span>.loves = [</span></div>
+            <div class="code-line"><span class="line-no">5</span><span class="code indent" style="padding-left:51px"><span class="c-yellow">"Python"</span>, <span class="c-yellow">"clean UI"</span>,</span></div>
+            <div class="code-line"><span class="line-no">6</span><span class="code indent" style="padding-left:51px"><span class="c-yellow">"solving little problems"</span></span></div>
+            <div class="code-line"><span class="line-no">7</span><span class="code indent" style="padding-left:34px">]</span></div>
+            <div class="code-line"><span class="line-no">8</span><span class="code">&nbsp;</span></div>
+            <div class="code-line"><span class="line-no">9</span><span class="code"><span class="c-muted"># currently making the web nicer</span></span></div>
+            <div class="code-line"><span class="line-no">10</span><span class="code"><span class="c-purple">while</span> <span class="c-green">self</span>.curious:</span></div>
+            <div class="code-line"><span class="line-no">11</span><span class="code indent"><span class="c-green">self</span>.build(<span class="c-yellow">"something useful"</span>)<span class="cursor"></span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="shell">
+        <div class="section-heading">
+          <div><p class="section-label">01 / KTO TO JEST TEN SŁAWEK?</p><h2>Trochę więcej o mnie</h2></div>
+          <span class="heading-note"># miło cię poznać</span>
+        </div>
+        <div class="about-grid">
+          <div class="about-copy">
+            <p>Jestem Sławek — studiuję informatykę na WSIZ w Bielsku. <strong>Od czasu do czasu tworzę swoje projekty.</strong>. Głównie programuje w Pythonie - tworzę w nim aplikacje GUI, które możesz znaleźć na moim githubie. Ponadto lubie również HTML'a i CSS'a, więc tworzę także strony internetowe (tą akurat pomógł stworzyć mi mój wujek - chat-gpt). Cały czas się uczę, więc <strong>jestem otwarty na zdobywanie nowej wiedzy!</strong></p>
+            <p></p>
+          </div>
+          <div class="facts" aria-label="A few quick facts">
+            <div class="fact"><span class="fact-name">Gdzie mieszkam?</span><span class="fact-value">Poland 🇵🇱</span></div>
+            <div class="fact"><span class="fact-name">Zazwyczaj używam</span><span class="fact-value">Python &amp; web-dev</span></div>
+            <div class="fact"><span class="fact-name">Aktualnie uczę się</span><span class="fact-value">Python, HTML+CSS, Linux</span></div>
+            <div class="fact"><span class="fact-name">Dostępność</span><span class="fact-value available"><span class="status-dot"></span>Gotowy na nowe wyzwania</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section skills-section" id="skills">
+      <div class="shell">
+        <div class="section-heading">
+          <div><p class="section-label">02 / NARZĘDZIA</p><h2>Czego używam i się uczę</h2></div>
+          <span class="heading-note"># czego używam</span>
+        </div>
+        <div class="skills-grid">
+          <article class="skill-card"><span class="skill-icon">Py</span><h3>Python</h3><p>Aplikacje GUI i skrypty &amp; Backend.</p></article>
+          <article class="skill-card"><span class="skill-icon">&lt;/&gt;</span><h3>HTML &amp; CSS</h3><p>Strony internetowe</p></article>
+          <article class="skill-card"><span class="skill-icon">⌘</span><h3>Git &amp; GitHub</h3><p>Udostępnianie i aktualizowanie projektów</p></article>
+          <article class="skill-card"><span class="skill-icon">✳</span><h3>Nauka</h3><p>Ciekawość i chęć uczenia się nowych rzeczy</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section projects-section" id="projects">
+      <div class="shell">
+        <div class="section-heading">
+          <div><p class="section-label">03 / PROJEKTY</p><h2>Kilka moich projektów</h2></div>
+          <span class="heading-note"># małe, wielkie rzeczy</span>
+        </div>
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">⌘</span><span class="project-type">/ 01 — AUTOMATION</span></div>
+            <h3>TO-DO List</h3>
+            <p>Prosta aplikacja napisana w Pythonie, która pozwala dodawać nowe zadania, zaznaczać co jest do zrobienia itp.</p>
+            <div class="tags"><span class="tag">Python</span><span class="tag">CLI</span><span class="tag">JSON</span></div>
+          </article>
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">◫</span><span class="project-type">/ 02 — FRONTEND</span></div>
+            <h3>Miejsce w internecie</h3>
+            <p>Strona internetowa pod adresem: https://slawkopl.github.io, którą stworzyłem sam.</p>
+            <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Responsive</span></div>
+          </article>
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">↗</span><span class="project-type">/ 03 — Weather App</span></div>
+            <h3>Weather App</h3>
+            <p>Prosta aplikacja pogodowa w Pythonie, którą możesz sprawdzić aktualną pogodę dla dowolnej miejscowości.</p>
+            <div class="tags"><span class="tag">Python</span><span class="tag">Weather APIS</span><span class="tag">PYQT</span></div>
+          </article>
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">☼</span><span class="project-type">/ 04 — FOR FUN</span></div>
+            <h3>Najtrudniejsza gra o kwadracie</h3>
+            <p>Ale to już musisz sprawdzić sam i przegrać...</p>
+            <div class="tags"><span class="tag">Python</span><span class="tag">Learning</span><span class="tag">Good vibes</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="shell">
+        <div class="contact-card">
+          <div><p class="section-label">04 / TERAZ TWOJA KOLEJ</p><h2>Masz jakiś fajny pomysł?</h2><p>Napisz maila to pogadamy i wypijemy kawę.</p></div>
+          <a class="button contact-email" href="mailto:hello@example.com">Napisz teraz <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner shell"><span>© 2026 Sławomir Worek &nbsp;·&nbsp; strona zrobiona z pasją <span class="heart">♥</span> </span><span>PL<span style="color:var(--green)">_</span></span></div>
+  </footer>
 </body>
 </html>
